@@ -1,6 +1,7 @@
 #include <concepts>
 #include <type_traits>
 #include <memory>
+#include <stdexcept>
 
 // Concept: requires T to have getPriority() and return type is totally ordered
 template<typename T>
@@ -290,6 +291,10 @@ class TaskTree {
     }
 
 public:
+    bool empty() const {
+        return !rootNode;
+    }
+
     void put(const T& value) {
         NodePtr inserted = push(rootNode, value);
         fix_insert(inserted);
@@ -347,6 +352,9 @@ public:
     }
 
     T pop_right_most() {
+        if (!rootNode)
+            throw std::runtime_error("TaskTree is empty");
+
         return get_and_delete_right_most();
     }
 };

@@ -9,15 +9,13 @@ class Task{
         Task() = delete;
 
         Task(int priority, std::function<void()> task)
-            : priority(priority), task(task){}
-
-        ~Task(){
-            // TODO: HANDLE WHAT HAPPENS IF A DESTRUCTOR IS CALLED WITH A NON-EXECUTED TASK?
-        }
+            : priority(priority), task(std::move(task)){}
         
         // runs associated task
         void operator()(){
             task();
         }
+
+        int getPriority() const {return this->priority;}
 
 };
